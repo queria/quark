@@ -1,0 +1,11 @@
+OPTS="${OPTS:-}TheIsland"
+OPTS="${OPTS}?Port=7777"
+OPTS="${OPTS}?QueryPort=27015"
+OPTS="${OPTS}?MaxPlayers=5"
+
+
+# CHANGE AT LEAST FOLLOWING VALUES:
+
+OPTS="${OPTS}?SessionName=YourServerName"
+OPTS="${OPTS}?ServerPassword=user-password"
+OPTS="${OPTS}?ServerAdminPassword=admin-password"
