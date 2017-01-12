@@ -27,6 +27,11 @@ if [[ "$1" == "install" ]]; then
 	exit
 fi
 
+if [[ "$1" == "update" ]]; then
+    $HOME/Steam/steamcmd.sh +login anonymous +force_install_dir $HOME/arksrv +app_update 376030 +quit
+    exit
+fi
+
 CFG="$HOME/arksrv/ShooterGame/Config/DefaultGameUserSettings.ini"
 [[ ! -h "$CFG" ]] && rm -f "$CFG"
 [[ -f "$CFG" ]] || ln -snf "$QUCFG" "$CFG"
@@ -43,4 +48,4 @@ source "$QUPRIV"
 OPTS="${OPTS} -server -log -nomansky -NoBattlEye"
 
 cd $HOME/arksrv/ShooterGame/Binaries/Linux/
-./ShooterGameServer $OPTS
+exec ./ShooterGameServer $OPTS
