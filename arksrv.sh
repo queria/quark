@@ -29,7 +29,7 @@ CFG="$HOME/arksrv/ShooterGame/Config/DefaultGameUserSettings.ini"
 
 OPTS=""
 source "$QUDIR/private"
-OPTS="${OPTS} -server -log -NoBattlEye"
+OPTS="${OPTS} -server -log -nomansky -NoBattlEye"
 
 cd $HOME/arksrv/ShooterGame/Binaries/Linux/
 ./ShooterGameServer $OPTS
