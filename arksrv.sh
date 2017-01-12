@@ -18,14 +18,23 @@ if [[ "$1" == "install" ]]; then
 	fi
 
 	[[ -f "$QUDIR/private" ]] || echo "Create $QUDIR/private (see private.example) before starting server"
+	[[ -f "$QUDIR/AllowedCheaterSteamIDs.txt" ]] || echo "Possibly create also AllowedCheaterSteamIDs.txt (admins steamid64 per line)"
 	exit
 fi
 
 QUDIR=$(dirname "$(readlink -f "$0")")
 QUCFG="${QUDIR}/DefaultGameUserSettings.ini"
 CFG="$HOME/arksrv/ShooterGame/Config/DefaultGameUserSettings.ini"
-[[ ! -h "$CFG" ]] && rm "$CFG"
+[[ ! -h "$CFG" ]] && rm -f "$CFG"
 [[ -f "$CFG" ]] || ln -snf "$QUCFG" "$CFG"
+
+QUCFG="${QUDIR}/DefaultGameUserSettings.ini"
+CFG="$HOME/arksrv/ShooterGame/Saved/AllowedCheaterSteamIDs.txt"
+if [[ -f "${QUCFG}" ]]; then
+	[[ -d "$(dirname "$CFG")" ]] || mkdir -p "$(dirname "$CFG")"
+	[[ -h "$CFG" ]] || rm -f "$CFG"
+	[[ -f "$CFG" ]] || ln -snf "$QUCFG" "$CFG"
+fi
 
 OPTS=""
 source "$QUDIR/private"
