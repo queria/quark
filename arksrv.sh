@@ -27,8 +27,8 @@ if [[ "$1" == "install" ]]; then
 	exit
 fi
 
+$HOME/Steam/steamcmd.sh +login anonymous +force_install_dir $HOME/arksrv +app_update 376030 +quit
 if [[ "$1" == "update" ]]; then
-    $HOME/Steam/steamcmd.sh +login anonymous +force_install_dir $HOME/arksrv +app_update 376030 +quit
     exit
 fi
 
