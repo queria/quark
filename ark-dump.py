@@ -3,6 +3,7 @@
 from arkpy.ark import ArkProfile
 from arkpy.ark import ArkTribe
 from arkpy.ark import StatMap
+import datetime
 import os
 import pprint  # noqa
 import sys
@@ -35,6 +36,7 @@ stats_inc = {
 data_dir = '.'
 if len(sys.argv) > 1:
     data_dir = sys.argv[1]
+print('ArkDump: reading dir %s' % data_dir)
 os.chdir(data_dir)
 
 for localfile in os.listdir(data_dir):
@@ -63,5 +65,9 @@ for localfile in os.listdir('.'):
     if not localfile.endswith('.arktribe'):
         continue
     tribe = ArkTribe(localfile)
-    pprint.pprint(tribe.log_index)
-    pprint.pprint(tribe.log.value)
+    print('%s Tribe Log:' % (tribe.name.value))
+    # pprint.pprint(tribe.log_index)
+    for log_entry in reversed(tribe.log.value):
+        print(' %s' % log_entry.value)
+
+print('ArkDump: generated at %s UTC' % (datetime.datetime.utcnow().isoformat()))
