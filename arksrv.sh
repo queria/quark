@@ -63,4 +63,5 @@ source "$QUPRIV"
 OPTS="${OPTS} -server -log -nomansky -NoBattlEye"
 
 cd $HOME/arksrv/ShooterGame/Binaries/Linux/
+ulimit -c 0
 exec ./ShooterGameServer $OPTS
