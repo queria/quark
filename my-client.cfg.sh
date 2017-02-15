@@ -30,23 +30,35 @@ if [[ ! -d "$CFGDIR" ]]; then
 fi
 echo "\$CFGDIR: ${CFGDIR}"
 
+cfg() { crudini --set "$CONFIG_FILE" "$SECTION" "$1" $2; }
+
 set -x
-CFG="${CFGDIR}/Engine.ini"
-SEC="/Script/Engine.RendererSettings"
-crudini --set "$CFG" "$SEC" r.DefaultFeature.Bloom False
-crudini --set "$CFG" "$SEC" r.DefaultFeature.AmbientOcclusion False
-crudini --set "$CFG" "$SEC" r.DefaultFeature.AutoExposure False
-crudini --set "$CFG" "$SEC" r.DefaultFeature.MotionBlur False
-crudini --set "$CFG" "$SEC" r.DefaultFeature.LensFlare False
-crudini --set "$CFG" "$SEC" r.DefaultFeature.AntiAliasing 0
+
+CONFIG_FILE="${CFGDIR}/Engine.ini"
+SECTION="/Script/Engine.RendererSettings"
+cfg r.DefaultFeature.Bloom False
+cfg r.DefaultFeature.AmbientOcclusion False
+cfg r.DefaultFeature.AutoExposure False
+cfg r.DefaultFeature.MotionBlur False
+cfg r.DefaultFeature.LensFlare False
+cfg r.DefaultFeature.AntiAliasing 0
+cfg r.BloomQuality 0
+cfg r.Shadow.MaxResolution 0
+cfg r.SSAOSmartBlur 0
+cfg r.HZBOcclusion 0
+cfg r.DistanceFieldShadowing 0
 
 CFG="${CFGDIR}/Scalability.ini"
 SEC="PostProcessQuality@0"
 crudini --set "$CFG" "$SEC" r.BloomQuality 0
 crudini --set "$CFG" "$SEC" r.LightShafts 0
+crudini --set "$CFG" "$SEC" r.LightShaftQuality 0
+crudini --set "$CFG" "$SEC" r.LensFlareQuality 0
 SEC="PostProcessQuality@1"
 crudini --set "$CFG" "$SEC" r.BloomQuality 0
 crudini --set "$CFG" "$SEC" r.LightShafts 0
+crudini --set "$CFG" "$SEC" r.LightShaftQuality 0
+crudini --set "$CFG" "$SEC" r.LensFlareQuality 0
 SEC="PostProcessQuality@2"
 crudini --set "$CFG" "$SEC" r.BloomQuality 0
 crudini --set "$CFG" "$SEC" r.LightShafts 0
