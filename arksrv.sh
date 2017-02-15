@@ -4,6 +4,7 @@ set -ex
 QUDIR=$(dirname "$(readlink -f "$0")")
 QUCFG="${QUDIR}/DefaultGameUserSettings.ini"
 QUPRIV="${QUDIR}/private"
+QUMODS="${QUDIR}/Mods"
 QUADMCFG="${QUDIR}/AllowedCheaterSteamIDs.txt"
 
 if [[ "$1" == "install" ]]; then
@@ -41,6 +42,18 @@ if [[ -f "${QUADMCFG}" ]]; then
 	[[ -d "$(dirname "$CFG")" ]] || mkdir -p "$(dirname "$CFG")"
 	[[ -h "$CFG" ]] || rm -f "$CFG"
 	[[ -f "$CFG" ]] || ln -snf "$QUADMCFG" "$CFG"
+fi
+
+MODS="$HOME/arksrv/ShooterGame/Content/Mods"
+if [[ -d "$QUMODS" ]]; then
+    cd "$QUMODS"
+    [[ -d "$MODS" ]] || mkdir -p "$MODS"
+    while read MODID; do
+        MODPATH="${MODS}/${MODID}"
+
+        [[ -h "${MODPATH}" ]] || rm -rf "${MODPATH}"
+        [[ -f "${MODPATH}" ]] || ln -snf "${QUMODS}/${MODID}" "${MODPATH}"
+    done < <(find . -maxdepth 1 -type d|grep -v '^.$'|xargs -n1 basename)
 fi
 
 OPTS=""
