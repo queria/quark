@@ -50,12 +50,19 @@ MODS="$HOME/arksrv/ShooterGame/Content/Mods"
 if [[ -d "$QUMODS" ]]; then
     cd "$QUMODS"
     [[ -d "$MODS" ]] || mkdir -p "$MODS"
-    while read MODID; do
+    while read MODFILE; do
+        MODID="${MODFILE%.mod}"
         MODPATH="${MODS}/${MODID}"
 
-        [[ -h "${MODPATH}" ]] || rm -rf "${MODPATH}"
-        [[ -f "${MODPATH}" ]] || ln -snf "${QUMODS}/${MODID}" "${MODPATH}"
-    done < <(find . -maxdepth 1 -type d|grep -v '^.$'|xargs -n1 basename)
+        [[ -h "${MODS}/${MODID}" ]] && rm -f "${MODS}/${MODID}"
+        cp -r "${QUMODS}/${MODID}" "${MODS}/${MODID}"
+        cp "${QUMODS}/${MODFILE}" "${MODS}/${MODFILE}"
+    done < <(find . -maxdepth 1 -type f -iname \*.mod | xargs -n1 basename)
+
+    while read DISABLEMOD; do
+        rm -rf "${MODS}/${DISABLEMOD%.disabled}"
+        rm -f "${MODS}/${DISABLEMOD%.disabled}.mod"
+    done < <(find . -maxdepth 1 -type f -iname \*.disabled | xargs -n1 basename)
 fi
 
 OPTS=""
