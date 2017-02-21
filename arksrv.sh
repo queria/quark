@@ -4,7 +4,6 @@ set -ex
 QUDIR=$(dirname "$(readlink -f "$0")")
 QUCFG="${QUDIR}/GameUserSettings.ini"
 QUPRIV="${QUDIR}/private"
-QUMODS="${QUDIR}/Mods"
 QUADMCFG="${QUDIR}/AllowedCheaterSteamIDs.txt"
 
 if [[ "$1" == "install" ]]; then
@@ -44,25 +43,6 @@ if [[ -f "${QUADMCFG}" ]]; then
 	[[ -d "$(dirname "$CFG")" ]] || mkdir -p "$(dirname "$CFG")"
 	[[ -h "$CFG" ]] || rm -f "$CFG"
 	[[ -f "$CFG" ]] || ln -snf "$QUADMCFG" "$CFG"
-fi
-
-MODS="$HOME/arksrv/ShooterGame/Content/Mods"
-if [[ -d "$QUMODS" ]]; then
-    cd "$QUMODS"
-    [[ -d "$MODS" ]] || mkdir -p "$MODS"
-    while read MODFILE; do
-        MODID="${MODFILE%.mod}"
-        MODPATH="${MODS}/${MODID}"
-
-        [[ -h "${MODS}/${MODID}" ]] && rm -f "${MODS}/${MODID}"
-        cp -r "${QUMODS}/${MODID}" "${MODS}/${MODID}"
-        cp "${QUMODS}/${MODFILE}" "${MODS}/${MODFILE}"
-    done < <(find . -maxdepth 1 -type f -iname \*.mod | xargs -n1 basename)
-
-    while read DISABLEMOD; do
-        rm -rf "${MODS}/${DISABLEMOD%.disabled}"
-        rm -f "${MODS}/${DISABLEMOD%.disabled}.mod"
-    done < <(find . -maxdepth 1 -type f -iname \*.disabled | xargs -n1 basename)
 fi
 
 OPTS=""
