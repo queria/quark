@@ -89,8 +89,10 @@ def join_log(log_filename, fresh_entries, old_log=[]):
     return old_log + missing
 
 
-def main(data_dir):
+def main(data_dir, perm_log_dir=None):
     print('ArkDump: reading dir %s' % data_dir)
+    perm_log_dir = perm_log_dir if perm_log_dir else data_dir
+    print('ArkDump: permanent tribe logs dir %s' % perm_log_dir)
     os.chdir(data_dir)
 
     for localfile in os.listdir(data_dir):
@@ -99,7 +101,8 @@ def main(data_dir):
         profile = ArkProfile(localfile)
         char = profile.character
 
-        print('==[ %s lvl %s ]==' % (char.name.value, (char.level_ups.value + 1)))
+        print('==[ %s lvl %s ]==' % (char.name.value,
+                                     (char.level_ups.value + 1)))
         print(' played by %s ' % (profile.player_name.value))
         print('%s engram points, %s experience' % (char.engram_points.value,
                                                    char.experience.value))
@@ -124,8 +127,10 @@ def main(data_dir):
         print('%s / %s Tribe Log:' % (tribe.name.value, tribe.tribe_id.value))
         fresh_log = [x.value for x in tribe.log.value]
 
-        # comment next line if you don't want to store permanent tribe logs
-        full_log = join_log('tribe_%s.log' % tribe.tribe_id.value, fresh_log)
+        # comment next join_log call if you don't want to store permanent logs
+        full_log = join_log(os.path.join(perm_log_dir, 'tribe_%s.log'
+                                         % tribe.tribe_id.value),
+                            fresh_log)
 
         for log_entry in reversed(full_log):
             print(' %s' % log_entry)
@@ -136,6 +141,9 @@ def main(data_dir):
 
 if __name__ == '__main__':
     data_dir = '.'
+    log_dir = None
     if len(sys.argv) > 1:
         data_dir = sys.argv[1]
-    main(data_dir)
+    if len(sys.argv) > 2:
+        log_dir = sys.argv[2]
+    main(data_dir, log_dir)

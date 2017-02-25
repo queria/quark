@@ -3,7 +3,8 @@
 # kept here for debugging purposes,
 # ark-dump.py contains code without debug
 
-# find first fresh entry missing in old_log # and append everything from it to end of fresh log into old_log
+# find first fresh entry missing in old_log # and append everything from it to
+# end of fresh log into old_log
 
 # start from newest entry in fresh
 # iterate from newest to oldest entry
@@ -21,7 +22,8 @@
 # all older then (happened before) entries in old_log
 # it would still append them to the end
 # though this cannot happen, not at least how i intend to use this
-# [i already do not have older entries than what i will initialize old_log with]
+# [i already do not have older entries than
+#  what i will initialize old_log with]
 
 old_log = [  # now unused, loading from file my.log
  'Day 1177, 00:27:47: <RichColor Color="1, 1, 0, 1">Qu dem a \'eiling\'!</>',
@@ -55,7 +57,6 @@ fresh = [
 ]
 
 
-
 def entry_time(line):
     split = line.split(',')
 
@@ -72,7 +73,7 @@ def entry_time(line):
 
 
 def join_log(log_filename, fresh_entries, old_log=[]):
-    
+
     if not old_log:
         try:
             with open(log_filename) as log:
