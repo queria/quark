@@ -3,6 +3,7 @@ set -ex
 
 QUDIR=$(dirname "$(readlink -f "$0")")
 QUCFG="${QUDIR}/GameUserSettings.ini"
+QUCFGAME="${QUDIR}/Game.ini"
 QUPRIV="${QUDIR}/private"
 QUADMCFG="${QUDIR}/AllowedCheaterSteamIDs.txt"
 
@@ -32,15 +33,18 @@ if [[ "$1" == "update" ]]; then
     exit
 fi
 
+[[ -d "$(dirname "$CFG")" ]] || mkdir -p "$(dirname "$CFG")"
+
 # for GameUserSettings, always overwrite, no symlink
 # as game server is going to be writing into it on the fly
 CFG="$HOME/arksrv/ShooterGame/Saved/Config/LinuxServer/GameUserSettings.ini"
-[[ -d "$(dirname "$CFG")" ]] || mkdir -p "$(dirname "$CFG")"
 [[ -f "$QUCFG" ]] && cp "$QUCFG" "$CFG"
+
+CFG="$HOME/arksrv/ShooterGame/Saved/Config/LinuxServer/Game.ini"
+[[ -f "$QUCFGAME" ]] && cp "$QUCFGAME" "$CFG"
 
 CFG="$HOME/arksrv/ShooterGame/Saved/AllowedCheaterSteamIDs.txt"
 if [[ -f "${QUADMCFG}" ]]; then
-	[[ -d "$(dirname "$CFG")" ]] || mkdir -p "$(dirname "$CFG")"
 	[[ -h "$CFG" ]] || rm -f "$CFG"
 	[[ -f "$CFG" ]] || ln -snf "$QUADMCFG" "$CFG"
 fi
