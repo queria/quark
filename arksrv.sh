@@ -1,13 +1,14 @@
 #!/bin/bash
 if [[ "$1" == "--help" ]]; then
 	echo ""
-	echo "$0 [install|update]"
+	echo "$0 [install|update|listmods]"
 	echo ""
 	echo "Install, update or start Ark server."
 	echo ""
 	echo "Before starting the server, update is always performed"
 	echo "as also configs replaced with the ones recorded in this repo."
 	echo ""
+    echo "listmods   Print urls pointing to Steam for each mod in ActiveMods."
 	exit 0
 fi
 
@@ -18,6 +19,23 @@ QUCFG="${QUDIR}/GameUserSettings.ini"
 QUCFGAME="${QUDIR}/Game.ini"
 QUPRIV="${QUDIR}/private"
 QUADMCFG="${QUDIR}/AllowedCheaterSteamIDs.txt"
+
+if [[ "$1" == "listmods" ]]; then
+    set +ex
+    if [[ ! -f "$QUCFG" ]]; then
+        echo "Missing config file $QUCFG" >&2
+        exit 1
+    fi
+    IFS=, read -ra ARR <<<"$(sed -nr 's/^ActiveMods=//p' "$QUCFG")"
+    if [[ "0" == "${#ARR[*]}" ]]; then
+        echo "No ActiveMods found in config $QUCFK" >&2
+        exit 1
+    fi
+    for F in ${ARR[*]}; do
+        echo "https://steamcommunity.com/sharedfiles/filedetails/?id=$F";
+    done
+    exit 0
+fi
 
 if [[ "$1" == "install" ]]; then
 	# $ useradd steam
