@@ -42,6 +42,7 @@ CFG="$HOME/arksrv/ShooterGame/Saved/Config/LinuxServer/GameUserSettings.ini"
 
 CFG="$HOME/arksrv/ShooterGame/Saved/Config/LinuxServer/Game.ini"
 [[ -f "$QUCFGAME" ]] && cp "$QUCFGAME" "$CFG"
+[[ -f "${QUCFGAME}.append_quantity" ]] && cat "${QUCFGAME}.append_quantity" >> "$CFG"
 
 CFG="$HOME/arksrv/ShooterGame/Saved/AllowedCheaterSteamIDs.txt"
 if [[ -f "${QUADMCFG}" ]]; then
