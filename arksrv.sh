@@ -1,4 +1,16 @@
 #!/bin/bash
+if [[ "$1" == "--help" ]]; then
+	echo ""
+	echo "$0 [install|update]"
+	echo ""
+	echo "Install, update or start Ark server."
+	echo ""
+	echo "Before starting the server, update is always performed"
+	echo "as also configs replaced with the ones recorded in this repo."
+	echo ""
+	exit 0
+fi
+
 set -ex
 
 QUDIR=$(dirname "$(readlink -f "$0")")
@@ -33,18 +45,20 @@ if [[ "$1" == "update" ]]; then
     exit
 fi
 
-[[ -d "$(dirname "$CFG")" ]] || mkdir -p "$(dirname "$CFG")"
 
 # for GameUserSettings, always overwrite, no symlink
 # as game server is going to be writing into it on the fly
 CFG="$HOME/arksrv/ShooterGame/Saved/Config/LinuxServer/GameUserSettings.ini"
+[[ -d "$(dirname "$CFG")" ]] || mkdir -p "$(dirname "$CFG")"
 [[ -f "$QUCFG" ]] && cp "$QUCFG" "$CFG"
 
 CFG="$HOME/arksrv/ShooterGame/Saved/Config/LinuxServer/Game.ini"
+[[ -d "$(dirname "$CFG")" ]] || mkdir -p "$(dirname "$CFG")"
 [[ -f "$QUCFGAME" ]] && cp "$QUCFGAME" "$CFG"
 [[ -f "${QUCFGAME}.append_quantity" ]] && cat "${QUCFGAME}.append_quantity" >> "$CFG"
 
 CFG="$HOME/arksrv/ShooterGame/Saved/AllowedCheaterSteamIDs.txt"
+[[ -d "$(dirname "$CFG")" ]] || mkdir -p "$(dirname "$CFG")"
 if [[ -f "${QUADMCFG}" ]]; then
 	[[ -h "$CFG" ]] || rm -f "$CFG"
 	[[ -f "$CFG" ]] || ln -snf "$QUADMCFG" "$CFG"
