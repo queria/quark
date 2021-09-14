@@ -2,6 +2,9 @@ OPTS="${OPTS:-}TheIsland"
 OPTS="${OPTS}?Port=7777"
 OPTS="${OPTS}?QueryPort=27015"
 OPTS="${OPTS}?MaxPlayers=5"
+OPTS="${OPTS}?ForceAllStructureLocking=false"
+OPTS="${OPTS}?PreventSpawnAnimations=true"
+OPTS="${OPTS}?PvEAllowStructuresAtSupplyDrops=true"
 
 
 # CHANGE AT LEAST FOLLOWING VALUES:
